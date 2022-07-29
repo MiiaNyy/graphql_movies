@@ -1,19 +1,12 @@
-import { gql } from 'apollo-server';
+import { ApolloServer } from "apollo-server";
+import { typeDefs } from "./typeDefs";
+import { resolvers } from "./resolvers";
 
-export const typeDefs = gql`
-    type Movie {
-        _id: ID!
-        title: String!
-        rating: Float!
-        year: Int!
-    }
+const server = new ApolloServer( {
+    typeDefs,
+    resolvers
+} );
 
-    type Query {
-        getMovies: [Movie!]!,
-        getMovie(id: ID!): Movie!
-    }
-
-    type Mutation {
-        createMovie(title: String!, rating: Float!, year: Int!): Movie!
-    }
-`;
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+});
